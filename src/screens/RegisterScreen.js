@@ -62,26 +62,6 @@ export default function RegisterScreen({ navigation }) {
     }
   };
 
-  const Field = ({ label, icon, value, onChange, placeholder, keyboardType, secure, errorKey, extra }) => (
-    <>
-      <Text style={styles.label}>{label}</Text>
-      <View style={[styles.inputWrapper, errors[errorKey] && styles.inputError]}>
-        <MaterialCommunityIcons name={icon} size={20} color="#94A3B8" style={styles.inputIcon} />
-        <TextInput
-          style={styles.input}
-          placeholder={placeholder}
-          placeholderTextColor="#64748B"
-          value={value}
-          onChangeText={(t) => { onChange(t); setErrors(e => ({ ...e, [errorKey]: '' })); }}
-          keyboardType={keyboardType || 'default'}
-          autoCapitalize="none"
-          secureTextEntry={secure && !showPassword}
-        />
-        {extra}
-      </View>
-      {errors[errorKey] ? <Text style={styles.errorText}>{errors[errorKey]}</Text> : null}
-    </>
-  );
 
   return (
     <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -95,8 +75,34 @@ export default function RegisterScreen({ navigation }) {
         </View>
 
         <View style={styles.card}>
-          <Field label="Nombre completo" icon="account-outline" value={nombre} onChange={setNombre} placeholder="Tu nombre" errorKey="nombre" />
-          <Field label="Correo Electrónico" icon="email-outline" value={email} onChange={setEmail} placeholder="correo@dominio.com" keyboardType="email-address" errorKey="email" />
+          <Text style={styles.label}>Nombre completo</Text>
+<View style={[styles.inputWrapper, errors.nombre && styles.inputError]}>
+  <MaterialCommunityIcons name="account-outline" size={20} color="#94A3B8" style={styles.inputIcon} />
+  <TextInput
+    style={styles.input}
+    placeholder="Tu nombre"
+    placeholderTextColor="#64748B"
+    value={nombre}
+    onChangeText={(t) => { setNombre(t); setErrors(e => ({ ...e, nombre: '' })); }}
+    autoCapitalize="words"
+  />
+</View>
+{errors.nombre ? <Text style={styles.errorText}>{errors.nombre}</Text> : null}
+          <Text style={styles.label}>Correo Electrónico</Text>
+<View style={[styles.inputWrapper, errors.email && styles.inputError]}>
+  <MaterialCommunityIcons name="email-outline" size={20} color="#94A3B8" style={styles.inputIcon} />
+  <TextInput
+    style={styles.input}
+    placeholder="correo@dominio.com"
+    placeholderTextColor="#64748B"
+    value={email}
+    onChangeText={(t) => { setEmail(t); setErrors(e => ({ ...e, email: '' })); }}
+    keyboardType="email-address"
+    autoCapitalize="none"
+    autoCorrect={false}
+  />
+</View>
+{errors.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
 
           <Text style={styles.label}>Contraseña</Text>
           <View style={[styles.inputWrapper, errors.password && styles.inputError]}>
@@ -116,7 +122,20 @@ export default function RegisterScreen({ navigation }) {
           </View>
           {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
 
-          <Field label="Confirmar contraseña" icon="lock-check-outline" value={confirmPassword} onChange={setConfirmPassword} placeholder="Repite tu contraseña" secure errorKey="confirmPassword" />
+          <Text style={styles.label}>Confirmar contraseña</Text>
+<View style={[styles.inputWrapper, errors.confirmPassword && styles.inputError]}>
+  <MaterialCommunityIcons name="lock-check-outline" size={20} color="#94A3B8" style={styles.inputIcon} />
+  <TextInput
+    style={styles.input}
+    placeholder="Repite tu contraseña"
+    placeholderTextColor="#64748B"
+    value={confirmPassword}
+    onChangeText={(t) => { setConfirmPassword(t); setErrors(e => ({ ...e, confirmPassword: '' })); }}
+    secureTextEntry={!showPassword}
+    autoCapitalize="none"
+  />
+</View>
+{errors.confirmPassword ? <Text style={styles.errorText}>{errors.confirmPassword}</Text> : null}
 
           <TouchableOpacity
             style={[styles.primaryButton, loading && styles.buttonDisabled]}

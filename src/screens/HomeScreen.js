@@ -7,6 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {
   collection, query, where, orderBy, onSnapshot
 } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../config/firebase';
 
 // Categorías 
@@ -47,8 +48,21 @@ export default function HomeScreen({ navigation }) {
 
   // Suscripción a Firestore
   useEffect(() => {
-    const user = auth.currentUser;
-    if (!user) return;
+  let unsubscribeGastos = null;
+
+  const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+    // Cerramos una suscripción anterior si existía
+    if (unsubscribeGastos) {
+      unsubscribeGastos();
+      unsubscribeGastos = null;
+    }
+
+    // Si no hay usuario, limpiamos datos y quitamos loading
+    if (!user) {
+      setGastos([]);
+      setLoading(false);
+      return;
+    }
 
     setLoading(true);
 
@@ -58,17 +72,32 @@ export default function HomeScreen({ navigation }) {
       orderBy('fechaTimestamp', 'desc')
     );
 
-    const unsub = onSnapshot(q, (snap) => {
-      const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setGastos(data);
-      setLoading(false);
-    }, (err) => {
-      console.error('Firestore error:', err);
-      setLoading(false);
-    });
+    unsubscribeGastos = onSnapshot(
+      q,
+      (snap) => {
+        const data = snap.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
 
-    return unsub;
-  }, []);
+        setGastos(data);
+        setLoading(false);
+      },
+      (err) => {
+        console.error('Firestore error:', err);
+        setLoading(false);
+      }
+    );
+  });
+
+  return () => {
+    unsubscribeAuth();
+
+    if (unsubscribeGastos) {
+      unsubscribeGastos();
+    }
+  };
+}, []);
 
   // Filtrado 
   const gastosFiltrados = gastos.filter(g => {

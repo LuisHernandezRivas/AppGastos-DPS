@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Toast from 'react-native-toast-message';
 import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
   ActivityIndicator, Alert, ScrollView, KeyboardAvoidingView,
@@ -82,6 +83,8 @@ export default function AddExpenseScreen({ navigation }) {
     setLoading(true);
 
     try {
+      if (loading) return;
+
       const user = auth.currentUser;
       if (!user) throw new Error('No hay sesión activa.');
 
@@ -96,10 +99,21 @@ export default function AddExpenseScreen({ navigation }) {
         fechaTimestamp: Timestamp.fromDate(fechaObj), // Para consultas y ordenamiento
         creadoEn: Timestamp.now(),
       });
+      
+      // reset formulario
+      setNombre('');
+      setMonto('');
+      setCategoriaSeleccionada('');
+      setFecha(formatDate(new Date()));
 
-      Alert.alert('¡Guardado!', 'Tu gasto fue registrado correctamente.', [
-        { text: 'OK', onPress: () => navigation.goBack() }
-      ]);
+      // mensaje
+      Toast.show({
+        type: 'success',
+        text1: 'Gasto guardado',
+        text2: 'Puedes seguir agregando gastos',
+        visibilityTime: 2000,
+      });
+
     } catch (error) {
       console.error('Error guardando gasto:', error);
       Alert.alert('Error', 'No se pudo guardar el gasto. Intenta de nuevo.');

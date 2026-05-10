@@ -12,8 +12,8 @@ Proyecto desarrollado para la materia de **Diseño y Programación de Software M
 
 ## Enlaces Importantes
 
-* **Documento Investigativo:** [Haz clic aquí para ver el documento](#)
-* **Video de Demostración:** [Haz clic aquí para ver el video](#)
+* **Documento Investigativo:** [Haz clic aquí para ver el documento](Foro%202%20DPS%20UDB%20VIRTUAL.pdf)
+* **Video de Demostración:** [Haz clic aquí para ver el video]([#](https://udbedu-my.sharepoint.com/:v:/g/personal/mr251336_alumno_udb_edu_sv/IQAeAv_p0_cARqkpwLC66aNCASnksMVY8xdHjG-keVlWWhU?e=exppr9&nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D))
 
 ---
 
